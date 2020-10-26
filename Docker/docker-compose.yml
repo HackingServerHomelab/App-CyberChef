@@ -5,15 +5,13 @@ services:
     container_name: cyberchef
     hostname: cyberchef
     restart: unless-stopped
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    hostname: nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ../Config/nginx.conf:/etc/nginx/nginx.conf
-      - ../Data/nginx:/etc/ssl/private
-
+    labels:
+      # Traefik Labels
+      - "traefik.enable=true"
+      # HTTPS Labels
+      - "traefik.http.routers.cyberchef.rule=Host(`localhost`)" # Domain Name
+      - "traefik.http.routers.cyberchef.entrypoints=web-secure"
+      - "traefik.http.routers.cyberchef.middlewares=default-headers@file"
+      - "traefik.http.routers.cyberchef.service=cyberchef"
+      - "traefik.http.routers.cyberchef.tls=true"
+      - "traefik.http.services.cyberchef.loadbalancer.server.port=8000" # Proxied Port

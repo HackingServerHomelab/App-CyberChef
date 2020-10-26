@@ -1,9 +1,11 @@
 # App-CyberChef
 
+## First Time Prerequisites
+
+1. Run [Traefik](https://github.com/mattlombana/App-Traefik)
 
 ## Running the Containers
 
-1. Run `./Config/gen_certs.sh` to generate the SSL certificates (alternatively,
-   add custom certs to the nginx folder)
-3. Update the `server_name` in [nginx.conf](./Config/nginx.conf)
-3. Run `docker-compose -f ./Docker/docker-compose.yml up -d`
+1. Update the following line in [docker-compose.yml](./Docker/docker-compose.yml)
+    * ``- "traefik.http.routers.cyberchef.rule=Host(`localhost`)" # Domain Name``
+2. Run `docker-compose -f ./Docker/docker-compose.yml up -d`
